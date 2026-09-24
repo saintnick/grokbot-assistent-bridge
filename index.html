@@ -20,12 +20,12 @@
 <body>
   <div class="wrap">
     <h1>Grok Bot bridge</h1>
-    <a class="btn" id="open" href="grokbot://app/v1/sidebar?agent=27a71f2b-463d-49a3-92cf-c4f7bf01986d">Open Chief of Staff</a>
+    <a class="btn" id="open" href="grokbot://app/v1/agent?id=27a71f2b-463d-49a3-92cf-c4f7bf01986d">Open Chief of Staff</a>
     <p>If nothing opens automatically (common on Android), tap the button above.</p>
   </div>
   <script>
     (function () {
-      var url = 'grokbot://app/v1/sidebar?agent=27a71f2b-463d-49a3-92cf-c4f7bf01986d';
+      var url = 'grokbot://app/v1/agent?id=27a71f2b-463d-49a3-92cf-c4f7bf01986d';
       try { location.replace(url); } catch (e) {}
     })();
   </script>
