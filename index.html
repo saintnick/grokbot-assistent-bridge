@@ -15,18 +15,51 @@
     }
     a.btn:active { transform: scale(0.98); }
     p { max-width: 28rem; line-height: 1.45; opacity: 0.7; margin: 0; font-size: 0.95rem; }
+    .alt { font-size: 0.85rem; opacity: 0.55; }
+    .alt a { color: #a5b4fc; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>Grok Bot bridge</h1>
-    <a class="btn" id="open" href="grokbot://app/v1/agent?id=27a71f2b-463d-49a3-92cf-c4f7bf01986d">Open Chief of Staff</a>
-    <p>If nothing opens automatically (common on Android), tap the button above.</p>
+    <a class="btn" id="open" href="https://cursor.com/grok-bot/link/v1/agent?id=27a71f2b-463d-49a3-92cf-c4f7bf01986d">Open Chief of Staff</a>
+    <p>Opening Chief of Staff in Grok Bot. If nothing happens, tap the button.</p>
+    <p class="alt">Direct app link: <a id="direct" href="grokbot://app/v1/agent?id=27a71f2b-463d-49a3-92cf-c4f7bf01986d">grokbot://…/agent?id=…</a></p>
   </div>
   <script>
     (function () {
-      var url = 'grokbot://app/v1/agent?id=27a71f2b-463d-49a3-92cf-c4f7bf01986d';
-      try { location.replace(url); } catch (e) {}
+      var AGENT = '27a71f2b-463d-49a3-92cf-c4f7bf01986d';
+      var httpsUrl = 'https://cursor.com/grok-bot/link/v1/agent?id=' + AGENT;
+      var appUrl = 'grokbot://app/v1/agent?id=' + AGENT;
+      var btn = document.getElementById('open');
+      var direct = document.getElementById('direct');
+      if (btn) btn.href = httpsUrl;
+      if (direct) direct.href = appUrl;
+
+      function tryAppScheme() {
+        try {
+          var a = document.createElement('a');
+          a.href = appUrl;
+          a.rel = 'noopener';
+          a.style.display = 'none';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        } catch (e) {}
+        try {
+          var iframe = document.createElement('iframe');
+          iframe.style.display = 'none';
+          iframe.src = appUrl;
+          document.body.appendChild(iframe);
+          setTimeout(function () { try { iframe.remove(); } catch (e) {} }, 2500);
+        } catch (e) {}
+      }
+
+      // Prefer the official HTTPS deep-link page (same format the app builds).
+      // Auto location.replace to grokbot:// is often blocked or stripped by browsers.
+      try { window.location.replace(httpsUrl); } catch (e) {}
+      setTimeout(tryAppScheme, 400);
+      setTimeout(tryAppScheme, 1200);
     })();
   </script>
 </body>
